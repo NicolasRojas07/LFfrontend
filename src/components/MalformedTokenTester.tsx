@@ -1,4 +1,3 @@
-// src/components/MalformedTokenTester.tsx
 import React, { useState } from "react";
 
 type TestToken = {

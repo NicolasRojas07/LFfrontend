@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Copy, Check } from 'lucide-react';
 import { api } from '../api';
+import { ALLOWED_ALGORITHMS, ALGORITHM_INFO, type AllowedAlgorithm } from '../config/jwt-config';
 
 interface EncodeTabProps {
   header: string;
@@ -24,6 +25,17 @@ export default function EncodeTab({
   const [copied, setCopied] = useState(false);
   const [testName, setTestName] = useState('');
   const [testDesc, setTestDesc] = useState('');
+  const [selectedAlgorithm, setSelectedAlgorithm] = useState<AllowedAlgorithm>('HS256');
+
+  useEffect(() => {
+    try {
+      const headerObj = JSON.parse(header);
+      const newHeader = { ...headerObj, alg: selectedAlgorithm };
+      setHeader(JSON.stringify(newHeader, null, 2));
+    } catch {
+      setHeader(JSON.stringify({ alg: selectedAlgorithm, typ: 'JWT' }, null, 2));
+    }
+  }, [selectedAlgorithm]);
 
   const handleEncode = async () => {
     if (!isHeaderValid || !isPayloadValid) return;
@@ -66,6 +78,23 @@ export default function EncodeTab({
 
   return (
     <div className="tab-panel">
+      {/* Algorithm Selector */}
+      <div className="form-group">
+        <label>Algorithm</label>
+        <select 
+          value={selectedAlgorithm} 
+          onChange={e => setSelectedAlgorithm(e.target.value as AllowedAlgorithm)}
+          className="input"
+          style={{ cursor: 'pointer' }}
+        >
+          {ALLOWED_ALGORITHMS.map(alg => (
+            <option key={alg} value={alg}>
+              {ALGORITHM_INFO[alg].name}
+            </option>
+          ))}
+        </select>
+      </div>
+
       <div className="form-row">
         <div className="form-group">
           <label>Header {!isHeaderValid && <span className="error-badge">Invalid JSON</span>}</label>

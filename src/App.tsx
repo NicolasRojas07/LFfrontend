@@ -3,6 +3,7 @@ import Header from './components/Header';
 import Tabs from './components/Tabs';
 import Notification from './components/Notification';
 import LoadingOverlay from './components/LoadingOverlay';
+import ParticleBackground from './components/ParticleBackground';
 import EncodeTab from './components/EncodeTab';
 import DecodeTab from './components/DecodeTab';
 import VerifyTab from './components/VerifyTab';
@@ -15,6 +16,11 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('encode');
   const [notification, setNotification] = useState<{ message: string, type: string } | null>(null);
   const [loading, setLoading] = useState(false);
+
+  // Update document root theme attribute
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+  }, [darkMode]);
 
   // Encode tab state
   const [header, setHeader] = useState(JSON.stringify({ alg: 'HS256', typ: 'JWT' }, null, 2));
@@ -78,6 +84,7 @@ export default function App() {
 
   return (
     <div className={`app ${darkMode ? 'dark' : ''}`}>
+      <ParticleBackground />
       {notification && <Notification {...notification} />}
       {loading && <LoadingOverlay />}
       <div className="container">
