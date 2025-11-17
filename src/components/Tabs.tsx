@@ -1,4 +1,4 @@
-import { Code, AlertCircle, Shield, TestTube } from 'lucide-react';
+import { Code, AlertCircle, Shield, TestTube, Activity } from 'lucide-react';
 
 interface TabsProps {
   activeTab: string;
@@ -10,6 +10,7 @@ export default function Tabs({ activeTab, setActiveTab }: TabsProps) {
     { id: 'encode', icon: Code, label: 'Encode' },
     { id: 'decode', icon: AlertCircle, label: 'Decode' },
     { id: 'verify', icon: Shield, label: 'Verify' },
+    { id: 'analyze', icon: Activity, label: 'Analyze' },
     { id: 'tests', icon: TestTube, label: 'Tests' },
   ];
 

@@ -8,6 +8,7 @@ import EncodeTab from './components/EncodeTab';
 import DecodeTab from './components/DecodeTab';
 import VerifyTab from './components/VerifyTab';
 import TestsTab from './components/TestsTab';
+import AnalyzeTab from './components/AnalyzeTab';
 import { api } from './api';
 import './app.css';
 
@@ -41,6 +42,10 @@ export default function App() {
 
   // Tests tab state
   const [tests, setTests] = useState<any[]>([]);
+
+  // Analyze tab state
+  const [analyzeToken, setAnalyzeToken] = useState('');
+  const [analyzeResult, setAnalyzeResult] = useState<any>(null);
 
   // JSON validation
   const validateJson = (str: string) => { try { JSON.parse(str); return true; } catch { return false; } };
@@ -123,6 +128,17 @@ export default function App() {
               tests={tests}
               loadTest={loadTest}
               deleteTest={deleteTest}
+            />
+          )}
+          {activeTab === 'analyze' && (
+            <AnalyzeTab
+              analyzeToken={analyzeToken}
+              setAnalyzeToken={setAnalyzeToken}
+              analyzeResult={analyzeResult}
+              setAnalyzeResult={setAnalyzeResult}
+              showNotification={showNotification}
+              loading={loading}
+              setLoading={setLoading}
             />
           )}
         </main>
