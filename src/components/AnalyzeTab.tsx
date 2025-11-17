@@ -22,7 +22,7 @@ export default function AnalyzeTab({
 }: AnalyzeTabProps) {
   const handleAnalyze = async () => {
     if (!analyzeToken.trim()) {
-      showNotification('Por favor ingresa un token JWT', 'error');
+      showNotification('Please enter a JWT token', 'error');
       return;
     }
 
@@ -41,12 +41,12 @@ export default function AnalyzeTab({
       const data = await response.json();
       setAnalyzeResult(data);
       showNotification(
-        data.overall_success ? 'Token válido en todas las fases' : 'Token con errores detectados',
+        data.overall_success ? 'Valid token in all phases' : 'Token with detected errors',
         data.overall_success ? 'success' : 'error'
       );
     } catch (error) {
       console.error('Error:', error);
-      showNotification('Error al analizar el token', 'error');
+      showNotification('Error analyzing token', 'error');
       setAnalyzeResult(null);
     } finally {
       setLoading(false);
@@ -76,20 +76,20 @@ export default function AnalyzeTab({
 
   return (
     <div className="tab-panel">
-      <h2>Análisis Completo de JWT</h2>
+      <h2>Complete JWT Analysis</h2>
       <p className="tab-description">
-        Analiza tu token JWT a través de las tres fases: Léxico, Sintáctico y Semántico
+        Analyze your JWT token through three phases: Lexical, Syntactic, and Semantic
       </p>
 
       <div className="form-group">
         <label>
           <Activity size={18} />
-          Token JWT
+          JWT Token
         </label>
         <textarea
           className="code-textarea"
           rows={5}
-          placeholder="Pega tu JWT aquí..."
+          placeholder="Paste your JWT here..."
           value={analyzeToken}
           onChange={(e) => setAnalyzeToken(e.target.value)}
         />
@@ -101,7 +101,7 @@ export default function AnalyzeTab({
         disabled={loading}
       >
         <Activity size={20} />
-        Analizar Token Completo
+        Analyze Complete Token
       </button>
 
       {analyzeResult && (
@@ -116,7 +116,7 @@ export default function AnalyzeTab({
             <div>
               <h2>{analyzeResult.message}</h2>
               <p className="status-text">
-                {analyzeResult.overall_success ? 'Token JWT Válido' : 'Token JWT Inválido'}
+                {analyzeResult.overall_success ? 'Valid JWT Token' : 'Invalid JWT Token'}
               </p>
             </div>
           </div>
@@ -130,38 +130,38 @@ export default function AnalyzeTab({
                 ) : (
                   <XCircle size={20} className="phase-icon error" />
                 )}
-                Fase 1: Análisis Léxico
+                Phase 1: Lexical Analysis
               </h3>
               <span className={`phase-badge ${analyzeResult.phases.lexical.success ? 'success' : 'error'}`}>
-                {analyzeResult.phases.lexical.success ? 'Exitoso' : 'Fallido'}
+                {analyzeResult.phases.lexical.success ? 'Successful' : 'Failed'}
               </span>
             </div>
 
             <div className="phase-content">
               <div className="info-grid">
                 <div className="info-item">
-                  <span className="info-label">Total de Tokens:</span>
+                  <span className="info-label">Total Tokens:</span>
                   <span className="info-value">{analyzeResult.phases.lexical.token_count}</span>
                 </div>
                 <div className="info-item">
-                  <span className="info-label">Alfabeto:</span>
+                  <span className="info-label">Alphabet:</span>
                   <span className="info-value">{analyzeResult.phases.lexical.alphabet.name}</span>
                 </div>
                 <div className="info-item">
-                  <span className="info-label">Tamaño del Alfabeto:</span>
-                  <span className="info-value">{analyzeResult.phases.lexical.alphabet.size} símbolos</span>
+                  <span className="info-label">Alphabet Size:</span>
+                  <span className="info-value">{analyzeResult.phases.lexical.alphabet.size} symbols</span>
                 </div>
               </div>
 
               <div className="subsection">
-                <h4>Tokens Encontrados:</h4>
+                <h4>Found Tokens:</h4>
                 <div className="table-container">
                   <table className="data-table">
                     <thead>
                       <tr>
-                        <th>Tipo</th>
-                        <th>Valor</th>
-                        <th>Posición</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                        <th>Position</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -178,7 +178,7 @@ export default function AnalyzeTab({
               </div>
 
               <div className="subsection">
-                <h4>Expresión Regular:</h4>
+                <h4>Regular Expression:</h4>
                 <code className="regex-display">{analyzeResult.phases.lexical.alphabet.regex}</code>
               </div>
 
@@ -186,7 +186,7 @@ export default function AnalyzeTab({
                 <div className="errors-box">
                   <h4>
                     <XCircle size={18} />
-                    Errores Léxicos:
+                    Lexical Errors:
                   </h4>
                   <ul>
                     {analyzeResult.phases.lexical.errors.map((error: string, index: number) => (
@@ -207,19 +207,19 @@ export default function AnalyzeTab({
                 ) : (
                   <XCircle size={20} className="phase-icon error" />
                 )}
-                Fase 2: Análisis Sintáctico
+                Phase 2: Syntactic Analysis
               </h3>
               <span className={`phase-badge ${analyzeResult.phases.syntactic.success ? 'success' : 'error'}`}>
-                {analyzeResult.phases.syntactic.success ? 'Exitoso' : 'Fallido'}
+                {analyzeResult.phases.syntactic.success ? 'Successful' : 'Failed'}
               </span>
             </div>
 
             <div className="phase-content">
               <div className="subsection">
-                <h4>Gramática:</h4>
+                <h4>Grammar:</h4>
                 <div className="info-grid">
                   <div className="info-item">
-                    <span className="info-label">Tipo:</span>
+                    <span className="info-label">Type:</span>
                     <span className="info-value">{analyzeResult.phases.syntactic.grammar.type}</span>
                   </div>
                   <div className="info-item">
@@ -230,7 +230,7 @@ export default function AnalyzeTab({
               </div>
 
               <div className="subsection">
-                <h4>Producciones de la Gramática:</h4>
+                <h4>Grammar Productions:</h4>
                 <ul className="productions-list">
                   {analyzeResult.phases.syntactic.grammar.productions.map((production: string, index: number) => (
                     <li key={index}>
@@ -242,7 +242,7 @@ export default function AnalyzeTab({
 
               {analyzeResult.phases.syntactic.parse_tree && (
                 <div className="subsection">
-                  <h4>Árbol de Derivación:</h4>
+                  <h4>Parse Tree:</h4>
                   <pre className="tree-display">{renderParseTree(analyzeResult.phases.syntactic.parse_tree)}</pre>
                 </div>
               )}
@@ -251,7 +251,7 @@ export default function AnalyzeTab({
                 <div className="errors-box">
                   <h4>
                     <XCircle size={18} />
-                    Errores Sintácticos:
+                    Syntactic Errors:
                   </h4>
                   <ul>
                     {analyzeResult.phases.syntactic.errors.map((error: string, index: number) => (
@@ -272,10 +272,10 @@ export default function AnalyzeTab({
                 ) : (
                   <XCircle size={20} className="phase-icon error" />
                 )}
-                Fase 3: Análisis Semántico
+                Phase 3: Semantic Analysis
               </h3>
               <span className={`phase-badge ${analyzeResult.phases.semantic.success ? 'success' : 'error'}`}>
-                {analyzeResult.phases.semantic.success ? 'Exitoso' : 'Fallido'}
+                {analyzeResult.phases.semantic.success ? 'Successful' : 'Failed'}
               </span>
             </div>
 
@@ -286,13 +286,13 @@ export default function AnalyzeTab({
                   <span className="info-value">{analyzeResult.phases.semantic.statistics?.total_claims || analyzeResult.phases.semantic.symbol_table.length}</span>
                 </div>
                 <div className="info-item">
-                  <span className="info-label">Claims en Header:</span>
+                  <span className="info-label">Header Claims:</span>
                   <span className="info-value">
                     {analyzeResult.phases.semantic.symbol_table.filter((s: any) => s.scope === 'header').length}
                   </span>
                 </div>
                 <div className="info-item">
-                  <span className="info-label">Claims en Payload:</span>
+                  <span className="info-label">Payload Claims:</span>
                   <span className="info-value">
                     {analyzeResult.phases.semantic.symbol_table.filter((s: any) => s.scope === 'payload').length}
                   </span>
@@ -300,15 +300,15 @@ export default function AnalyzeTab({
               </div>
 
               <div className="subsection">
-                <h4>Tabla de Símbolos (Claims):</h4>
+                <h4>Symbol Table (Claims):</h4>
                 <div className="table-container">
                   <table className="data-table symbols-table">
                     <thead>
                       <tr>
-                        <th>Nombre</th>
-                        <th>Valor</th>
-                        <th>Tipo</th>
-                        <th>Alcance</th>
+                        <th>Name</th>
+                        <th>Value</th>
+                        <th>Type</th>
+                        <th>Scope</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -331,7 +331,7 @@ export default function AnalyzeTab({
                 <div className="errors-box">
                   <h4>
                     <XCircle size={18} />
-                    Errores Semánticos:
+                    Semantic Errors:
                   </h4>
                   <ul>
                     {analyzeResult.phases.semantic.errors.map((error: string, index: number) => (
@@ -345,7 +345,7 @@ export default function AnalyzeTab({
                 <div className="warnings-box">
                   <h4>
                     <AlertTriangle size={18} />
-                    Advertencias:
+                    Warnings:
                   </h4>
                   <ul>
                     {analyzeResult.phases.semantic.warnings.map((warning: string, index: number) => (
@@ -361,7 +361,7 @@ export default function AnalyzeTab({
           {analyzeResult.decoded && (
             <div className="phase-section decoded">
               <div className="phase-header">
-                <h3>Token Decodificado</h3>
+                <h3>Decoded Token</h3>
               </div>
 
               <div className="phase-content">
