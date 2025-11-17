@@ -747,6 +747,15 @@ body::after {
   opacity: 0.7;
 }
 
+.form-group small,
+.form-group .helper-text {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
 .error-badge {
   color: var(--danger);
   font-size: 0.875rem;

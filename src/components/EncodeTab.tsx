@@ -26,6 +26,7 @@ export default function EncodeTab({
   const [testName, setTestName] = useState('');
   const [testDesc, setTestDesc] = useState('');
   const [selectedAlgorithm, setSelectedAlgorithm] = useState<AllowedAlgorithm>('HS256');
+  const [expirationMinutes, setExpirationMinutes] = useState('');
 
   useEffect(() => {
     try {
@@ -40,11 +41,21 @@ export default function EncodeTab({
   const handleEncode = async () => {
     if (!isHeaderValid || !isPayloadValid) return;
     try {
-      const res = await api.post('/encode', {
+      const requestBody: any = {
         header: JSON.parse(header),
         payload: JSON.parse(payload),
         secret,
-      });
+      };
+
+      // Only add exp_minutes if user specified a value
+      if (expirationMinutes && expirationMinutes.trim() !== '') {
+        const expMinutes = parseInt(expirationMinutes);
+        if (!isNaN(expMinutes) && expMinutes > 0) {
+          requestBody.exp_minutes = expMinutes;
+        }
+      }
+
+      const res = await api.post('/encode', requestBody);
       setToken(res.data.token);
       showNotification('Token generated successfully!');
     } catch (err: any) {
@@ -119,6 +130,26 @@ export default function EncodeTab({
       <div className="form-group">
         <label>Secret Key</label>
         <input type="text" value={secret} onChange={e => setSecret(e.target.value)} className="input" />
+      </div>
+
+      <div className="form-group">
+        <label>
+          Expiration (minutes)
+          <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 'normal', marginLeft: '0.5rem' }}>
+            - Optional
+          </span>
+        </label>
+        <input 
+          type="number" 
+          value={expirationMinutes} 
+          onChange={e => setExpirationMinutes(e.target.value)} 
+          className="input" 
+          placeholder="60"
+          min="1"
+        />
+        <small style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '0.25rem', display: 'block' }}>
+          Leave empty for no expiration. Common values: 60 (1h), 1440 (1d), 10080 (1w)
+        </small>
       </div>
 
       <button onClick={handleEncode} disabled={!isHeaderValid || !isPayloadValid || loading} className="btn btn-primary btn-block">
